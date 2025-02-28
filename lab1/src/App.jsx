@@ -239,6 +239,7 @@ function App() {
   const data = localStorage.getItem("Cart")
   // const [showCart, setShowCart] = useState(false)
   const { theme, dark, toggle } = useContext(ThemeContext)
+  const [selectOrchid, setSelectOrchid] = useState(null)
 
 
   // const [users, setUsers] = useState([])
@@ -261,6 +262,12 @@ function App() {
         ? { ...orchid, numberOfLike: orchid.numberOfLike + 1 }
         : orchid
     ))
+  }
+
+  const handleSelectOrchid = (orchid) => {
+    setSelectOrchid(orchid)
+    localStorage.setItem("selectOrchid", JSON.stringify(orchid))
+    window.location.href = "/dashboard"
   }
 
   // const handleAddToCart = () => {
@@ -339,110 +346,119 @@ function App() {
       <div>
         <Routes>
           <Route path='/dashboard' element={<Dashboard />} />
-        </Routes>
-        {/* <Link to="/dashboard">Go to Dashboard</Link> */}
+          <Route path='/' element={
 
 
 
-        <div style={{
 
 
-          minHeight: '100vh',
-          padding: '76px 0 20px',
-          transition: 'background-color 0.3s, color 0.3s',
-          width: '100%',
+
+            < div style={{
 
 
-        }}>
+              minHeight: '100vh',
+              padding: '76px 0 20px',
+              transition: 'background-color 0.3s, color 0.3s',
+              width: '100%',
 
 
-          {/* Hiển thị danh sách user */}
-          {/* <ul>
+            }}>
+
+
+              {/* Hiển thị danh sách user */}
+              {/* <ul>
         {users.map((item) => <li>{item.name}</li>)}
       </ul> */}
-          {/* Hiển thị giỏ hàng */}
-          {/* <h2>Giỏ Hàng</h2>
+              {/* Hiển thị giỏ hàng */}
+              {/* <h2>Giỏ Hàng</h2>
       <ul>
         {cart.map((item) => <li>{item.name}</li>)}
       </ul> */}
-          <button
-            className={`btn btn-outline-${dark ? 'light' : 'dark'} mb-3`}
-            onClick={toggle}
-          >
-            {dark ? '☀️ Light Mode' : '🌙 Dark Mode'}
-          </button>
+              <button
+                className={`btn btn-outline-${dark ? 'light' : 'dark'} mb-3`}
+                onClick={toggle}
+              >
+                {dark ? '☀️ Light Mode' : '🌙 Dark Mode'}
+              </button>
 
-          <div className='container-fluid'>
-            <div className='row justify-content-center'>
-              {orchids.map((item, index) => (
-                <Orchid
-                  key={index}
-                  name={item.name}
-                  rating={item.rating}
-                  image={item.image}
-                  category={item.category}
-                  isSpecial={item.isSpecial}
-                  isNatural={item.isNatural}
-                  color={item.color}
-                  numberOfLike={item.numberOfLike}
-                  origin={item.origin}
-                  onClick={() => {
-                    setIsShow(true)
-                    setOrchid(item)
+              <div className='container-fluid'>
+                <div className='row justify-content-center'>
+                  {orchids.map((item, index) => (
+                    <Orchid
+                      key={index}
+                      name={item.name}
+                      rating={item.rating}
+                      image={item.image}
+                      category={item.category}
+                      isSpecial={item.isSpecial}
+                      isNatural={item.isNatural}
+                      color={item.color}
+                      numberOfLike={item.numberOfLike}
+                      origin={item.origin}
+                      // onClick={() => {
+                      //   setIsShow(true)
+                      //   setOrchid(item)
 
-                  }}
-                  onLike={() => handleLike(index)}
-                />
-              ))}
-            </div>
-            {orchid && <div className="modal" id="exampleModal" tabindex="-1" style={{ display: isShow ? 'block' : 'none' }}>
-              <div className="modal-dialog">
-                <div className="modal-content" style={{
-                  backgroundColor: dark ? theme.backgroundColor : theme.backgroundColor,
-                  color: dark ? theme.color : theme.color
-                }}>
-                  <div className="modal-header">
-                    <h5 className="modal-title">Modal title</h5>
-                    <button type="button" onClick={() => setIsShow(false)} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div className="modal-body">
-                    <div className='row'>
-                      <div className='col-md-6'>
-                        {/* <p>Modal body text goes here.</p> */}
-                        <img src={orchid.image} className='img-fluid' />
+                      // }}
+                      onClick={() => handleSelectOrchid(item)}
+                      onLike={() => handleLike(index)}
+                    />
+                  ))}
+                </div>
+                {orchid && <div className="modal" id="exampleModal" tabindex="-1" style={{ display: isShow ? 'block' : 'none' }}>
+                  <div className="modal-dialog">
+                    <div className="modal-content" style={{
+                      backgroundColor: dark ? theme.backgroundColor : theme.backgroundColor,
+                      color: dark ? theme.color : theme.color
+                    }}>
+                      <div className="modal-header">
+                        <h5 className="modal-title">Modal title</h5>
+                        <button type="button" onClick={() => setIsShow(false)} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                      <div className='col-md-6'>
-                        <h4>{orchid.name}</h4>
-                        <div className='orchid-details'>
-                          <p><strong>Rating:</strong> {orchid.rating}</p>
-                          <p><strong>Category:</strong> {orchid.category}</p>
-                          <p><strong>Color:</strong> {orchid.color}</p>
-                          <p><strong>Origin:</strong> {orchid.origin}</p>
-                          <p><strong>Likes:</strong> {orchid.numberOfLike}</p>
+                      <div className="modal-body">
+                        <div className='row'>
+                          <div className='col-md-6'>
+                            {/* <p>Modal body text goes here.</p> */}
+                            <img src={orchid.image} className='img-fluid' />
+                          </div>
+                          <div className='col-md-6'>
+                            <h4>{orchid.name}</h4>
+                            <div className='orchid-details'>
+                              <p><strong>Rating:</strong> {orchid.rating}</p>
+                              <p><strong>Category:</strong> {orchid.category}</p>
+                              <p><strong>Color:</strong> {orchid.color}</p>
+                              <p><strong>Origin:</strong> {orchid.origin}</p>
+                              <p><strong>Likes:</strong> {orchid.numberOfLike}</p>
+                            </div>
+
+                          </div>
                         </div>
 
                       </div>
-                    </div>
-
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" onClick={() => setIsShow(false)} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <div className="modal-footer">
+                        <button type="button" onClick={() => setIsShow(false)} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
 
-                    {/* <button type='button' onClick={() =>
+                        {/* <button type='button' onClick={() =>
 
                  }></button> */}
-                    {/* Spread Operator:
+                        {/* Spread Operator:
                 ...cart => copy toàn bộ mảng cart */}
-                    <button type="button" className="btn btn-primary">Add to cart</button>
+                        <button type="button" className="btn btn-primary">Add to cart</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                }
               </div>
+
             </div>
-            }
-          </div>
-        </div>
+          } />
+
+        </Routes>
+
       </div>
+
     </>
 
   )
