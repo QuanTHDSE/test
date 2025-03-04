@@ -7,7 +7,7 @@ import Orchid from './components/Orchid/Orchid'
 import { ThemeContext } from './components/ThemeConext/ThemeContext'
 import { NavThemeProvider } from './components/ThemeConext/NavthemeContext'
 import Dashboard from './page/Dashboard'
-
+import { useNavigate } from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import { Link } from 'react-router-dom';
 
@@ -264,11 +264,17 @@ function App() {
     ))
   }
 
+  const nagivate = useNavigate();
+
   const handleSelectOrchid = (orchid) => {
     setSelectOrchid(orchid)
     localStorage.setItem("selectOrchid", JSON.stringify(orchid))
-    window.location.href = "/dashboard"
+    // window.location.href = "/dashboard"
+    nagivate('/dashboard')
+    
   }
+
+ 
 
   // const handleAddToCart = () => {
   //   const isExist = cart.some(item => item.image === orchid.image)
